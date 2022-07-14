@@ -1,22 +1,41 @@
-import { useState } from 'react'
-import Modal from 'react-modal';
-import logoImg from '../../assets/logo.svg'
-import { Container, Content } from './styles'
+import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import logoImg from "../../assets/logo.svg";
+import { LoginContext } from "../../hooks/useLogin";
+import { Login } from "../../pages/Login";
+import { Container, Content, LoginStyle } from "./styles";
 
 interface HeaderProps {
-    onOpenNewTransactionModal: () => void;
+  onOpenNewTransactionModal: () => void;
 }
 
 export function Header({ onOpenNewTransactionModal }: HeaderProps) {
+  const { login, setLogin } = useContext(LoginContext);
 
-    return (
-        <Container>
-            <Content>
-                <img src={logoImg} alt="dt money" />
-                <button type="button" onClick={onOpenNewTransactionModal}>
-                    Nova transação
-                </button>
-            </Content>
-        </Container>
-    )
+  const navigate = useNavigate();
+
+  function handleLogout() {
+    navigate(-1);
+  }
+
+  return (
+    <Container>
+      <button className="LogoutButton" onClick={handleLogout} type="button">
+        Logout
+      </button>
+
+      <Content>
+        <div>
+          <img src={logoImg} alt="dt money" />
+          <LoginStyle>Olá {login}, seja bem-vindo!</LoginStyle>
+        </div>
+
+        <div>
+          <button type="button" onClick={onOpenNewTransactionModal}>
+            Nova transação
+          </button>
+        </div>
+      </Content>
+    </Container>
+  );
 }
